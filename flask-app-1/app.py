@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.route('/flask/flask-app-1')
 def hello_world():
     return jsonify({
-        "message": "Hello from Podman Dak!",
+        "message": "Hello from Podman!",
         "status": "running"
     })
 

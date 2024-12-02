@@ -66,7 +66,7 @@ Write-Host "Starting $activeContainerTag to $inactiveContainerTag swap..."
 Write-Host "Pulling targetTag $targetTag..."
 podman image pull "$($registry)/$($buildName):$($targetTag)"
 
-Write-Host "Tagging targetTag $targetTag with inactiveContainerTag $inactiveContainerTag"
+Write-Host "Tagging targetTag $targetTag with inactiveContainerTag $inactiveContainerTag..."
 podman tag "$($registry)/$($buildName):$($targetTag)" "$($registry)/$($buildName):$($inactiveContainerTag)"
 
 Write-Host "Starting $targetContainerName systemd service..."
@@ -76,6 +76,9 @@ systemctl start $targetContainerName
 Write-Host "Running update_nginx.sh..."
 podman exec nginx-serve bash /tools/update_nginx.sh $activePort $targetPort
 
-Write-Host "Stopping $activeContainerName"
+Write-Host "Stopping $activeContainerName..."
 systemctl stop $activeContainerName
 systemctl mask $activeContainerName
+
+Write-Host "Pruning unused images..."
+podman image prune --all -f

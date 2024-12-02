@@ -4,6 +4,16 @@
 
 #!markdown
 
+# Quadlet
+
+#!pwsh
+
+\cp /mnt/c/dev/podman-bgd-serve/quadlet/* /etc/containers/systemd/ -rf
+/usr/libexec/podman/quadlet
+systemctl daemon-reload
+
+#!markdown
+
 # Serve
 
 #!markdown
@@ -29,18 +39,6 @@ podman run -d -p 8080:8080 -v /mnt/c/dev/podman-bgd-serve/serve:/etc/nginx/conf.
 #!pwsh
 
 podman push --tls-verify=false localhost/nginx-serve localhost:8082/nginx-serve:latest
-
-#!markdown
-
-### Quadlet
-
-#!pwsh
-
-cp /mnt/c/dev/podman-bgd-serve/quadlet/* /etc/containers/systemd/ -rf
-/usr/libexec/podman/quadlet
-systemctl daemon-reload
-systemctl start nginx-serve
-systemctl status nginx-serve
 
 #!markdown
 
@@ -88,22 +86,6 @@ podman run -d -p 8081:8501 --env MYENV="streamlit-app-1-green" --name streamlit-
 
 #!markdown
 
-### Quadlet
-
-#!pwsh
-
-cp /mnt/c/dev/podman-bgd-serve/quadlet/* /etc/containers/systemd/ -rf
-/usr/libexec/podman/quadlet
-systemctl daemon-reload
-systemctl start streamlit-app-1-blue
-systemctl status streamlit-app-1-blue
-systemctl restart streamlit-app-1-blue
-systemctl start streamlit-app-1-green
-systemctl status streamlit-app-1-green
-systemctl restart streamlit-app-1-green
-
-#!markdown
-
 # Streamlit-app-2
 
 #!markdown
@@ -140,22 +122,6 @@ podman run -d -p 8083:8501 --env MYENV="streamlit-app-2-green" --name streamlit-
 
 #!markdown
 
-### Quadlet
-
-#!pwsh
-
-cp /mnt/c/dev/podman-bgd-serve/quadlet/ /etc/containers/systemd/ -rf
-/usr/libexec/podman/quadlet
-systemctl daemon-reload
-systemctl start streamlit-app-2-blue
-systemctl status streamlit-app-2-blue
-systemctl restart streamlit-app-2-blue
-systemctl start streamlit-app-2-green
-systemctl status streamlit-app-2-green
-systemctl restart streamlit-app-2-green
-
-#!markdown
-
 # Flask-app-1
 
 #!markdown
@@ -189,22 +155,6 @@ podman run -d -p 5001:5000 --name flask-app-1-green flask-app-1
 #!pwsh
 
 podman push --tls-verify=false localhost/flask-app-1 localhost:8082/flask-app-1:latest
-
-#!markdown
-
-### Quadlet
-
-#!pwsh
-
-cp /mnt/c/dev/podman-bgd-serve/quadlet/* /etc/containers/systemd/ -rf
-/usr/libexec/podman/quadlet
-systemctl daemon-reload
-systemctl start flask-app-1-blue
-systemctl status flask-app-1-blue
-systemctl restart flask-app-1-blue 
-systemctl start flask-app-1-green
-systemctl status flask-app-1-green
-systemctl restart flask-app-1-green
 
 #!markdown
 
