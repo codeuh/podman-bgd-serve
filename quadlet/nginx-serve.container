@@ -1,0 +1,18 @@
+[Unit]
+Description=Nginx Server
+After=network.target
+
+[Container]
+ContainerName=nginx-serve
+Image=localhost:8082/nginx-serve
+PodmanArgs=--tls-verify=false
+PublishPort=8080:8080
+Volume=/mnt/c/dev/bgd-serve/serve:/etc/nginx/conf.d/
+AutoUpdate=registry
+
+[Service]
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

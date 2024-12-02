@@ -1,0 +1,15 @@
+FROM docker.io/library/python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+
+ENV MYENV="default"
+
+EXPOSE 8501
+
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.baseUrlPath=streamlit/streamlit-app-1", "--server.address=0.0.0.0","--browser.gatherUsageStats=false"]

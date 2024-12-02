@@ -1,0 +1,18 @@
+[Unit]
+Description=Streamlit App 2 Blue
+After=network.target
+
+[Container]
+ContainerName=streamlit-app-2-blue
+Image=localhost:8082/streamlit-app-2
+PodmanArgs=--tls-verify=false
+PublishPort=8094:8501
+Environment=MYENV=streamlit-app-2
+AutoUpdate=registry
+
+[Service]
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

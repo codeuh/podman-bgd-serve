@@ -1,0 +1,17 @@
+[Unit]
+Description=Flask App 1 Blue
+After=network.target
+
+[Container]
+ContainerName=flask-app-1-blue
+Image=localhost:8082/flask-app-1
+PodmanArgs=--tls-verify=false
+PublishPort=5002:5000
+AutoUpdate=registry
+
+[Service]
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
