@@ -163,3 +163,19 @@ podman push --tls-verify=false localhost/flask-app-1 localhost:8082/flask-app-1:
 #!pwsh
 
 (1..50000)|ForEach-Object{Invoke-RestMethod http://localhost:8080/flask/flask-app-1}
+
+#!markdown
+
+### k6 load test script gen
+
+#!pwsh
+
+podman run --rm -i -v C:\dev\podman-bgd-serve/flask-app-1:/app -w /app grafana/k6 new
+
+#!markdown
+
+### k6 load test run
+
+#!pwsh
+
+podman run --rm -i -v /mnt/c/dev/podman-bgd-serve/flask-app-1/script.js:/app/script.js grafana/k6 run /app/script.js -vu 500 -d 1m --no-usage-report
