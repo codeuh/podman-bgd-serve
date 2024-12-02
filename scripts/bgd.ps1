@@ -30,6 +30,7 @@ if ($activeContainer.Length -ne 1) {
     Write-Warning "$($activeContainer |ConvertTo-Json -depth 20)"
     Write-Error "Error: Found more than one container who's name begins with $buildName. I only expect one running container with a suffix of -blue, or -green. See above warning for containers details."
 }
+
 $activeContainerName = $activeContainer.Names
 Write-Host "Active container: $($activeContainerName)"
 $activePort = $activeContainer.Ports.host_port
@@ -37,7 +38,9 @@ Write-Host "Active port: $activePort"
 $lastDashIndex = $activeContainerName.LastIndexOf("-")
 $containerBaseName = $activeContainerName.Substring(0, $lastDashIndex)
 $activeContainerSuffix = $activeContainerName.Substring($lastDashIndex)
+$activeContainerTag = $activeContainerSuffix.Replace("-", "")
 $inactiveContainerSuffix = Get-SuffixSwapper $activeContainerSuffix
+$inactiveContainerTag = $inactiveContainerSuffix.Replace("-", "")
 $targetContainerName = "$($containerBaseName)$($inactiveContainerSuffix)"
 Write-Host "Inactive container: $($targetContainerName)"
 
@@ -54,15 +57,17 @@ if ($inactivePublishPortMapping.Length -ne 1) {
 
 # the line below will take an input from $inactivePublishPortMapping that looks like:
 #   PublishPort=5001:5000
-# and assign 5001, the host port, to $targetPort
+# and assigns 5001, the host port, to $targetPort
 $targetPort = (($inactivePublishPortMapping -split "=")[1] -split ":")[0]
-
 Write-Host "Inactive port: $($targetPort)"
 
-Write-Host "Starting $activeContainerSuffix to $inactiveContainerSuffix swap..."
+Write-Host "Starting $activeContainerTag to $inactiveContainerTag swap..."
 
-Write-Host "Pull targetTag $targetTag"
+Write-Host "Pulling targetTag $targetTag..."
 podman image pull "$($registry)/$($buildName):$($targetTag)"
+
+Write-Host "Tagging targetTag $targetTag with inactiveContainerTag $inactiveContainerTag"
+podman tag "$($registry)/$($buildName):$($targetTag)" "$($registry)/$($buildName):$($inactiveContainerTag)"
 
 Write-Host "Starting $targetContainerName systemd service..."
 systemctl unmask $targetContainerName

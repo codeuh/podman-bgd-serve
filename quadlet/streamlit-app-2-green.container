@@ -4,11 +4,10 @@ After=network.target
 
 [Container]
 ContainerName=streamlit-app-2-green
-Image=localhost:8082/streamlit-app-2
+Image=streamlit-app-2:green
 PodmanArgs=--tls-verify=false
 PublishPort=8095:8501
 Environment=MYENV=streamlit-app-2
-AutoUpdate=registry
 
 [Service]
 Restart=always

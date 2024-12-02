@@ -4,10 +4,9 @@ After=network.target
 
 [Container]
 ContainerName=flask-app-1-blue
-Image=localhost:8082/flask-app-1
+Image=flask-app-1:blue
 PodmanArgs=--tls-verify=false
 PublishPort=5002:5000
-AutoUpdate=registry
 
 [Service]
 Restart=always
